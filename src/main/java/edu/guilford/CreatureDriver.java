@@ -1,22 +1,28 @@
 package edu.guilford;
 
+/**
+ * This program simulates an ecosystem consisting of plants, herbivores, and carnivores.
+ * @author Ray Wang
+ * @version 1.0
+ */
+
 import java.util.ArrayList;
 import java.util.Random;
 
 public class CreatureDriver {
     public static void main(String[] args) {
-        final int PLANTSIZE = 300;
-        final int PESIZE = 1000;
-        final int MESIZE = 6000;
+        final int PLANT_SIZE = 300;
+        final int PE_SIZE = 1000;
+        final int ME_SIZE = 6000;
 
         final int NPLANTS = 2000;
         Random rand = new Random();
 
         ArrayList<Plant> plants = new ArrayList<Plant>();
         for (int i = 0; i < NPLANTS; i++) {
-            plants.add(new Plant(PLANTSIZE + rand.nextInt(-50,50), 5));
+            plants.add(new Plant(PLANT_SIZE + rand.nextInt(-50,50), 5));
         }
-        PlantEater plantEater = new PlantEater(PESIZE + rand.nextInt(-100,100), 3, plants);
+        PlantEater plantEater = new PlantEater(PE_SIZE + rand.nextInt(-100,100), 3, plants);
 
         // test chew method. The result should show the the plant's size to decrease by 0-5 and the plantEater's foodEaten to increase by the same amount
         Plant plant = plants.get(0);
@@ -35,22 +41,22 @@ public class CreatureDriver {
 
 
         // Test 2
-        final int NPLANTEATERS = 300;
-        final int MAXSTEPS = 1000;
-        final double PLANTBIRTHCHANCE = 0.05;
-        final double PEBIRTHCHANCE = 1;
+        int nPlantEaters = 300;
+        final int MAX_STEPS = 1000;
+        final double PLANT_BIRTH_CHANCE = 0.05;
+        final double PE_BIRTH_CHANCE = 1;
 
         plants = new ArrayList<Plant>();
         for (int i = 0; i < NPLANTS; i++) {
-            plants.add(new Plant(PLANTSIZE + rand.nextInt(-50,50), 5));
+            plants.add(new Plant(PLANT_SIZE + rand.nextInt(-50,50), 5));
         }
         ArrayList<PlantEater> plantEaters = new ArrayList<PlantEater>();
-        for (int i = 0; i < NPLANTEATERS; i++) {
-            plantEaters.add(new PlantEater(PESIZE + rand.nextInt(-100,100), 3, plants));
+        for (int i = 0; i < nPlantEaters; i++) {
+            plantEaters.add(new PlantEater(PE_SIZE + rand.nextInt(-100,100), 3, plants));
         }
 
         int steps = 0;
-        while (stillAlive(plantEaters) && steps < MAXSTEPS) {
+        while (stillAlive(plantEaters) && steps < MAX_STEPS) {
             System.out.println("Day " + steps + ": " + plantEaters.size() + " plant eaters, " + plants.size() + " plants, total mass=" + totalMass(plantEaters) + ", total mass of plants=" + totalMass(plants));
 
             for (PlantEater pe : plantEaters) {
@@ -60,11 +66,11 @@ public class CreatureDriver {
                 p.simulateDay();
             }
 
-            if (Math.random() < PLANTBIRTHCHANCE) {
-                plants.add(new Plant(PLANTSIZE + rand.nextInt(-50,50), 5));
+            if (Math.random() < PLANT_BIRTH_CHANCE) {
+                plants.add(new Plant(PLANT_SIZE + rand.nextInt(-50,50), 5));
             }
-            if (Math.random() < PEBIRTHCHANCE) {
-                plantEaters.add(new PlantEater(PESIZE + rand.nextInt(-100,100), 3, plants));
+            if (Math.random() < PE_BIRTH_CHANCE) {
+                plantEaters.add(new PlantEater(PE_SIZE + rand.nextInt(-100,100), 3, plants));
             }
 
             int i = 0;  
@@ -93,11 +99,11 @@ public class CreatureDriver {
         final int NPlantEaters = 100;
 
         plantEaters = new ArrayList<PlantEater>();
-        for (int i = 0; i < NPLANTEATERS; i++) {
-            plantEaters.add(new PlantEater(PESIZE + rand.nextInt(-100,100), 3, plants));
+        for (int i = 0; i < nPlantEaters; i++) {
+            plantEaters.add(new PlantEater(PE_SIZE + rand.nextInt(-100,100), 3, plants));
         }
 
-        MeatEater meatEater = new MeatEater(MESIZE + rand.nextInt(-100,100), 3, plantEaters);
+        MeatEater meatEater = new MeatEater(ME_SIZE + rand.nextInt(-100,100), 3, plantEaters);
         PlantEater PE = plantEaters.get(0);
 
         // test chase method. The result should show the the plant's size to decrease by 0-5 and the plantEater's foodEaten to increase by the same amount
@@ -119,31 +125,32 @@ public class CreatureDriver {
         // Simulation with meat eaters
 
         System.out.println("Simulation with meat eaters");
-        final int NMEATEATERS = 100;
-        final double MEBIRTHCHANCE = 0.3;
+        final int NMEATEATERS = 400;
+        nPlantEaters = 3000;
+        // final double ME_BIRTH_CHANCE = 0.3;
         // plant eaters need to be able to reproduce more in order to keep up with the diet of the meat eaters
         double peBirthRate;
         double meBirthRate;
-        final double PEREPRODUCTIONFACTOR = 10.0;
-        final double MEREPRODUCTIONFACTOR = 20.0;
+        final double PE_REPRODUCTION_FACTOR = 5.0;
+        final double ME_REPRODUCTION_FACTOR = 4.0;
 
         plants = new ArrayList<Plant>();
         for (int i = 0; i < NPLANTS; i++) {
-            plants.add(new Plant(PLANTSIZE + rand.nextInt(-50,50), 5));
+            plants.add(new Plant(PLANT_SIZE + rand.nextInt(-50,50), 5));
         }
 
         plantEaters = new ArrayList<PlantEater>();
-        for (int i = 0; i < NPLANTEATERS; i++) {
-            plantEaters.add(new PlantEater(PESIZE + rand.nextInt(-100,100), 3, plants));
+        for (int i = 0; i < nPlantEaters; i++) {
+            plantEaters.add(new PlantEater(PE_SIZE + rand.nextInt(-100,100), 3, plants));
         }
 
         ArrayList<MeatEater> meatEaters = new ArrayList<MeatEater>();
         for (int i = 0; i < NMEATEATERS; i++) {
-            meatEaters.add(new MeatEater(MESIZE + rand.nextInt(-100,100), 3, plantEaters));
+            meatEaters.add(new MeatEater(ME_SIZE + rand.nextInt(-100,100), 3, plantEaters));
         }
 
         steps = 0;
-        while (stillAlive(meatEaters) && steps < MAXSTEPS) {
+        while (stillAlive(meatEaters) && steps < MAX_STEPS) {
             System.out.println("Day " + steps + ": " + meatEaters.size() + " meat eaters (mass = " + totalMass(meatEaters) + "), " + plantEaters.size() + " plant eaters (mass = " + totalMass(plantEaters) + "), " + plants.size() + " plants (mass = " + totalMass(plants) + ")");
 
             for (MeatEater me : meatEaters) {
@@ -156,18 +163,18 @@ public class CreatureDriver {
                 p.simulateDay();
             }
 
-            if (Math.random() < PLANTBIRTHCHANCE) {
-                plants.add(new Plant(PLANTSIZE + rand.nextInt(-50,50), 5));
+            if (Math.random() < PLANT_BIRTH_CHANCE) {
+                plants.add(new Plant(PLANT_SIZE + rand.nextInt(-50,50), 5));
             }
 
-            peBirthRate = plantEaters.size() / PEREPRODUCTIONFACTOR;
+            peBirthRate = plantEaters.size() / PE_REPRODUCTION_FACTOR;
             for (int i = 0; i < (int) peBirthRate; i++) {
-                plantEaters.add(new PlantEater(PESIZE + rand.nextInt(-100,100), 3, plants));
+                plantEaters.add(new PlantEater(PE_SIZE + rand.nextInt(-100,100), 3, plants));
             }
 
-            meBirthRate = meatEaters.size() / MEREPRODUCTIONFACTOR;
+            meBirthRate = meatEaters.size() / ME_REPRODUCTION_FACTOR;
             for (int i = 0; i < (int) meBirthRate; i++) {
-                meatEaters.add(new MeatEater(MESIZE + rand.nextInt(-100,100), 3, plantEaters));
+                meatEaters.add(new MeatEater(ME_SIZE + rand.nextInt(-100,100), 3, plantEaters));
             }
 
             int i = 0;  
